@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Icon({ name, className = "" }: { name: string; className?: string }) {
   const paths: Record<string, React.ReactNode> = {
@@ -15,19 +17,23 @@ export function Icon({ name, className = "" }: { name: string; className?: strin
     bolt: <path d="m13 2-9 12h7l-1 8 10-13h-7Z" />,
     server: <><rect x="4" y="3" width="16" height="7" rx="1" /><rect x="4" y="14" width="16" height="7" rx="1" /><path d="M8 6h.01M8 17h.01" /></>,
     mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></>,
+    star: <path d="m12 3 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z" />,
+    chart: <><path d="M4 3v17h17M8 15V9m5 6V5m5 10v-4" /></>,
+    calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 11h18" /></>,
   };
   return <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name] || paths.arrow}</svg>;
 }
 
 export function Logo() {
-  return <a className="logo" href="#home" aria-label="Floreza Technologies home"><svg width="44" height="48" viewBox="0 0 44 48" fill="none" aria-hidden="true"><path d="m22 3 18 10v22L22 45 4 35V13Z" stroke="#72caff" strokeWidth="3" /><path d="m5 14 17 10 17-10M22 24v20M5 34l17-10 17 10" stroke="#bce7ff" strokeWidth="2.5" /><path d="m29 9-17 10 12 7-12 7" stroke="#72caff" strokeWidth="3" /></svg><span>Floreza<small>TECHNOLOGIES</small></span></a>;
+  return <Link className="logo" href="/" aria-label="Floreza Technologies home"><svg width="44" height="48" viewBox="0 0 44 48" fill="none" aria-hidden="true"><path d="m22 3 18 10v22L22 45 4 35V13Z" stroke="#72caff" strokeWidth="3" /><path d="m5 14 17 10 17-10M22 24v20M5 34l17-10 17 10" stroke="#bce7ff" strokeWidth="2.5" /><path d="m29 9-17 10 12 7-12 7" stroke="#72caff" strokeWidth="3" /></svg><span>Floreza<small>TECHNOLOGIES</small></span></Link>;
 }
 
-const nav = [["Home", "#home"], ["About Us", "#about"], ["Our Businesses", "#businesses"], ["Technology & Solutions", "#solutions"], ["Careers", "#careers"], ["News", "#news"], ["Contact Us", "#contact"]];
+const nav = [["Home", "/"], ["About Us", "/about"], ["Our Businesses", "/businesses"], ["Technology & Solutions", "/technology"], ["Careers", "/careers"], ["News", "/news"], ["Contact Us", "/contact"]];
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  return <header className="header"><div className="container header-inner"><Logo /><nav className={open ? "navigation open" : "navigation"} aria-label="Main navigation">{nav.map(([label, href], i) => <a className={i === 0 ? "active" : ""} key={label} href={href} onClick={() => setOpen(false)}>{label}</a>)}</nav><a className="button button-small header-contact" href="#contact">Get in Touch</a><button className="menu-toggle" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)}><span /><span /><span /></button></div></header>;
+  const pathname = usePathname();
+  return <header className="header"><div className="container header-inner"><Logo /><nav id="main-navigation" className={open ? "navigation open" : "navigation"} aria-label="Main navigation">{nav.map(([label, href]) => <Link className={pathname === href || (href === "/news" && pathname.startsWith("/news/")) ? "active" : ""} aria-current={pathname === href ? "page" : undefined} key={label} href={href} onClick={() => setOpen(false)}>{label}</Link>)}</nav><Link className="button button-small header-contact" href="/contact">Get in Touch</Link><button className="menu-toggle" aria-label={open ? "Close navigation" : "Open navigation"} aria-controls="main-navigation" aria-expanded={open} onClick={() => setOpen(!open)} onKeyDown={event => { if (event.key === "Escape") setOpen(false); }}><span /><span /><span /></button></div></header>;
 }
 
 export function WorldMap({ compact = false }: { compact?: boolean }) {

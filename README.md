@@ -30,4 +30,8 @@ Alternatively, run `npx vercel` from this folder and follow the Vercel prompts.
 
 Edit `app/page.tsx` for copy, sections, service cards, and contact details. Edit `app/globals.css` for styling and `app/components.tsx` for navigation and SVG artwork.
 
-The statistics, business claims, and contact address reproduce the provided reference; confirm them before publishing. Contact buttons open an email client. Careers and news contain introductory placeholders. Legal links request the corresponding documents by email; replace them with approved policy pages when available.
+The site includes Home, About, Businesses, Technology & Solutions, Careers, News, news article pages, and Contact routes. Shared navigation and footer components live in `app/site-ui.tsx` and `app/components.tsx`. Division details, regions, technology capabilities, platforms, job listings, and news announcements live in `app/site-content.ts`.
+
+The statistics, business claims, job listings, announcements, and contact addresses reproduce the supplied references; confirm them before publishing. News article pages show the supplied announcement summaries. The Privacy Policy and Terms & Conditions pages render the supplied text from `content/privacy-policy.txt` and `content/terms-and-conditions.txt`. Complete the legal-entity details called out in those documents before publishing.
+
+The contact form validates required fields and prepares an email draft, which the visitor reviews and sends in their own email app. It also offers a copy-message fallback. It does not send messages from the server or store submissions. No email API credentials are required. To support direct server delivery later, connect a verified sending domain and email provider with server-side validation and abuse protection.
